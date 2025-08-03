@@ -6,9 +6,19 @@
     <title>Vue Basics</title>
 </head>
 <body>
-    <div>
-        Hello
+    <div id="app">
+        {{greeting}}
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        let app = Vue.createApp({
+            data : function(){
+                return {
+                    greeting: 'Hello user'
+                }
+            }
+        })
+        app.mount('#app')
+    </script>
 </body>
 </html>
