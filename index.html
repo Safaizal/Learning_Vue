@@ -4,21 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vue Basics</title>
+    <style>
+        body{
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .box{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(0, 127, 169);
+            border: 2px solid blue;
+            margin-top: 20px;
+        }
+        .box1{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(255, 0, 0);
+            border: 2px solid blue;
+            margin-top: 20px;
+        }
+        .box2{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(0, 255, 0);
+            border: 2px solid blue;
+            margin-top: 20px;
+        }
+        .box3{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(128, 0, 128);
+            border: 2px solid blue;
+            margin-top: 20px;
+        }
+        [v-cloak]{
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        {{greeting}}
+    <div id="app" class="container" v-cloak> 
+        <!-- this v-cloak directive is used to prevent the Vue.js application from displaying 
+        uncompiled template code before the Vue instance is fully mounted. -->
+        <div>
+            {{greeting}}
+            <input type="text" v-model="greeting" placeholder="Type your greeting here">
+            <!-- v-model is used for two-way data binding in Vue.js. 
+             It allows you to bind the value of an input element to a data property, 
+             so that when the input changes, the data property updates automatically, 
+             and vice versa. -->
+        </div>
+        <hr>
+        <div v-if = "blue" class="box"></div>
+        <div v-else-if = "red" class="box1"></div>
+        <div v-else = "green" class="box2"></div>
+        <div v-show = "purple" class="box3"></div>
+        <!-- v-show are used to conditionally render elements in Vue.js. 
+         v-if removes the element from the DOM when the condition is false, 
+         while v-show toggles the visibility of the element without removing it from the DOM.-->
+        <!-- there are many other directives like v-for, v-on, v-bind, etc. 
+          check it on https://vuejs.org/api/built-in-directives.html -->
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         let app = Vue.createApp({
             data : function(){
                 return {
-                    greeting: 'Hello user'
+                    greeting: 'Hello user',
+                    blue: false,
+                    red: false,
+                    green: true,
+                    purple: true
                 }
             }
         })
         app.mount('#app')
+        //this app.mount is used to mount the Vue application to the HTML element with the id "app".
     </script>
 </body>
 </html>
