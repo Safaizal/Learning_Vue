@@ -36,6 +36,13 @@
             border: 2px solid blue;
             margin-top: 20px;
         }
+        .box4{
+            width: 200px;
+            height: 200px;
+            background-color: rgb(255, 0, 0);
+            border: 2px solid blue;
+            margin-top: 20px;
+        }
         [v-cloak]{
             display: none;
         }
@@ -54,10 +61,20 @@
              and vice versa. -->
         </div>
         <hr>
+        <button v-on:click ="blue = true">Show Box</button>
+        <button v-on:click ="green = !green">Toggle Box</button>
+        <!-- v-on is a directive in Vue.js that is used to listen to DOM events and execute methods when those events are triggered. -->
+        
+        <button @click ="purple = !purple">Toggle Box2</button>
+        <!-- here the @click is a shorthand for v-on:click, -->
+
+        <button @click ="togglebox">Toggle Box3</button>
+        <!-- we can also give method in here, this togglebox method is defined in the Vue instance to toggle the visibility of the red box. -->
+        
         <div v-if = "blue" class="box"></div>
-        <div v-else-if = "red" class="box1"></div>
-        <div v-else = "green" class="box2"></div>
-        <div v-show = "purple" class="box3"></div>
+        <div v-if = "green" class="box2"></div>
+        <div v-if = "purple" class="box3"></div>
+        <div v-if = "red" class="box4"></div>
         <!-- v-show are used to conditionally render elements in Vue.js. 
          v-if removes the element from the DOM when the condition is false, 
          while v-show toggles the visibility of the element without removing it from the DOM.-->
@@ -71,9 +88,15 @@
                 return {
                     greeting: 'Hello user',
                     blue: false,
-                    red: false,
-                    green: true,
-                    purple: true
+                    purple: false,
+                    green: false,
+                    red :false,
+                }
+            },
+            methods: {
+                // you can define methods here if needed
+                togglebox(){
+                    this.red = !this.red;
                 }
             }
         })
