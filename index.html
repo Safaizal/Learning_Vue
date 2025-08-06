@@ -7,6 +7,7 @@
     <style>
         body{
             font-family: 'Courier New', Courier, monospace;
+            background-color: black;
         }
         .box{
             width: 200px;
@@ -54,11 +55,18 @@
         uncompiled template code before the Vue instance is fully mounted. -->
         <div>
             {{greeting}}
+            <br>
             <input type="text" v-model="greeting" placeholder="Type your greeting here">
             <!-- v-model is used for two-way data binding in Vue.js. 
              It allows you to bind the value of an input element to a data property, 
              so that when the input changes, the data property updates automatically, 
              and vice versa. -->
+            <br>
+            <input type="text" @keyup.enter="clicked(value)" v-model="value"placeholder="Type things to see enter event">
+            <!-- @keyup.enter is a shorthand for v-on:keyup.enter,
+             which listens for the enter key press event on the input field.
+             When the enter key is pressed, it calls the clicked method with the current value of the input field. -->
+        
         </div>
         <hr>
         <button v-on:click ="blue = true">Show Box</button>
@@ -70,7 +78,7 @@
 
         <button @click ="togglebox">Toggle Box3</button>
         <!-- we can also give method in here, this togglebox method is defined in the Vue instance to toggle the visibility of the red box. -->
-        
+
         <div v-if = "blue" class="box"></div>
         <div v-if = "green" class="box2"></div>
         <div v-if = "purple" class="box3"></div>
@@ -78,6 +86,7 @@
         <!-- v-show are used to conditionally render elements in Vue.js. 
          v-if removes the element from the DOM when the condition is false, 
          while v-show toggles the visibility of the element without removing it from the DOM.-->
+
         <!-- there are many other directives like v-for, v-on, v-bind, etc. 
           check it on https://vuejs.org/api/built-in-directives.html -->
     </div>
@@ -87,6 +96,7 @@
             data : function(){
                 return {
                     greeting: 'Hello user',
+                    value: '',
                     blue: false,
                     purple: false,
                     green: false,
@@ -97,6 +107,10 @@
                 // you can define methods here if needed
                 togglebox(){
                     this.red = !this.red;
+                },
+                clicked(value){
+                    console.log("Enter Key pressed " + value);
+                    // this method will be called when the enter key is pressed in the input field
                 }
             }
         })
