@@ -47,12 +47,20 @@
         [v-cloak]{
             display: none;
         }
+        input{
+            margin: 10px;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div id="app" class="container" v-cloak> 
         <!-- this v-cloak directive is used to prevent the Vue.js application from displaying 
         uncompiled template code before the Vue instance is fully mounted. -->
+
+        <login-form/>
+        <!-- this is a custom component, you can define it in the Vue instance or import it if it's in a separate file.
+        It will be rendered here. -->
         <div>
             {{greeting}}
             <br>
@@ -114,6 +122,15 @@
                 }
             }
         })
+        app.component('login-form', {
+            template: `
+                <div>
+                    <input type = "email">
+                    <input type = "password">
+                </div>
+                `
+        })
+        // this component is defined within the Vue instance,
         app.mount('#app')
         //this app.mount is used to mount the Vue application to the HTML element with the id "app".
     </script>
