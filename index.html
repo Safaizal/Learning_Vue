@@ -7,7 +7,6 @@
     <style>
         body{
             font-family: 'Courier New', Courier, monospace;
-            background-color: black;
         }
         .box{
             width: 200px;
@@ -124,11 +123,27 @@
         })
         app.component('login-form', {
             template: `
-                <div>
+                <form @submit.prevent = "HandleSubmit">
+                <!-- @submit is a shorthand for v-on:submit, which listens for the submit event
+                     on the form and calls the HandleSubmit method when the form is submitted,
+                     But Without the event modifiers, there is an refresh on webpage whenever we click the button.
+                     To avoid this we give the event modifiers like @submit.prevent -->
+                    <h1> {{title}} </h1>
                     <input type = "email">
                     <input type = "password">
-                </div>
-                `
+                    <button>Submit</button>
+                </form>
+                `,
+                data(){
+                    return {
+                        title : "Login Form"
+                    }
+                },
+                methods: {
+                    HandleSubmit(){
+                        console.log("Submitted");
+                    }
+                }
         })
         // this component is defined within the Vue instance,
         app.mount('#app')
