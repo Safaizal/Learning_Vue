@@ -129,23 +129,48 @@
                      But Without the event modifiers, there is an refresh on webpage whenever we click the button.
                      To avoid this we give the event modifiers like @submit.prevent -->
                     <h1> {{title}} </h1>
-                    <input type = "email">
-                    <input type = "password">
+                    <custom-input type = "email" :label = "emaillabel"/>
+                    <custom-input type = "password" :label = "passwordlabel"/>
                     <button>Submit</button>
                 </form>
                 `,
+                // here we use v-bind to bind the label prop to the custom-input component.
+                // v-model is used to bind the password data property to the input field in the custom-input component.
+                // There is difference between :label and label,
+                // :label is a shorthand for v-bind:label, which binds the label prop to the custom-input component.
+                // label is a prop that can be passed to the custom-input component.
+                // In simple word label give the string value and it show in the web page.
+                // And :label give the variable that we created inside the data function of the Vue instance.
+                components: ['custom-input'],
+                // this components array is used to register the custom-input component within the login-form component.
                 data(){
                     return {
-                        title : "Login Form"
+                        title : "Login Form",
+                        email: '',
+                        password: '',
+                        // these are the data properties for the login form component
+                        emaillabel: 'Email',
+                        passwordlabel: 'Password'
                     }
                 },
                 methods: {
                     HandleSubmit(){
-                        console.log("Submitted");
+                        console.log(this.email, this.password);
                     }
                 }
         })
         // this component is defined within the Vue instance,
+        app.component('custom-input', {
+            template: `
+                <div>
+                    <label>{{label}}</label>
+                    <input type="text" >
+                </div>
+            `,
+            props: ['label']
+            // this props array is used to define the label prop that can be passed to the custom-input component.
+            // this allows the parent component (login-form) to pass a label value to the custom-input component.
+        })
         app.mount('#app')
         //this app.mount is used to mount the Vue application to the HTML element with the id "app".
     </script>
