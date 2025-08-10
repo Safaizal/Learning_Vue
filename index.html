@@ -129,8 +129,8 @@
                      But Without the event modifiers, there is an refresh on webpage whenever we click the button.
                      To avoid this we give the event modifiers like @submit.prevent -->
                     <h1> {{title}} </h1>
-                    <custom-input type = "email" :label = "emaillabel"/>
-                    <custom-input type = "password" :label = "passwordlabel"/>
+                    <custom-input v-model = "email" :label = "emaillabel"/>
+                    <custom-input v-model = "password" :label = "passwordlabel"/>
                     <button>Submit</button>
                 </form>
                 `,
@@ -146,8 +146,8 @@
                 data(){
                     return {
                         title : "Login Form",
-                        email: '',
-                        password: '',
+                        email: 'qwert',
+                        password: 'qwert',
                         // these are the data properties for the login form component
                         emaillabel: 'Email',
                         passwordlabel: 'Password'
@@ -167,14 +167,22 @@
                     <input type="text" v-model="inputValue">
                 </div>
             `,
-            props: ['label'],
+            props: ['label', 'modelValue'],
             // this props array is used to define the label prop that can be passed to the custom-input component.
             // this allows the parent component (login-form) to pass a label value to the custom-input component.
-            data(){
-                return {
-                    inputValue: ''
-                    // this inputValue data property is used to bind the value of the input field in the custom-input component.
-                    // v-model is used to create a two-way data binding between the input field and the inputValue property.
+            computed: {
+                // this computed property is used to create a two-way data binding with the v-model directive.
+                // When the input value changes, it updates the inputValue property in the custom-input component.
+                // And when the inputValue property changes, it updates the input field in the custom-input component.
+                // But here we need to define the get and set methods to make it work properly.
+                inputValue: {
+                    get() {
+                        return this.modelValue;
+                        // this returns the value of the modelValue prop, which is bound to the v-model directive in the parent component.
+                    },
+                    set(){
+
+                    }
                 }
             }
         })
