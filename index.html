@@ -164,12 +164,19 @@
             template: `
                 <div>
                     <label>{{label}}</label>
-                    <input type="text" >
+                    <input type="text" v-model="inputValue">
                 </div>
             `,
-            props: ['label']
+            props: ['label'],
             // this props array is used to define the label prop that can be passed to the custom-input component.
             // this allows the parent component (login-form) to pass a label value to the custom-input component.
+            data(){
+                return {
+                    inputValue: ''
+                    // this inputValue data property is used to bind the value of the input field in the custom-input component.
+                    // v-model is used to create a two-way data binding between the input field and the inputValue property.
+                }
+            }
         })
         app.mount('#app')
         //this app.mount is used to mount the Vue application to the HTML element with the id "app".
