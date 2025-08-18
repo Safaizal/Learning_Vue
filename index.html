@@ -129,13 +129,18 @@
                      But Without the event modifiers, there is an refresh on webpage whenever we click the button.
                      To avoid this we give the event modifiers like @submit.prevent -->
                     <h1> {{title}} </h1>
-                    <p v-for = "str in inputs" :key = "str">{{str}} </p>
+                    <!-- <p v-for = "str in inputs" :key = "str">{{str}} </p> -->
                     <!-- v-for is a directive in Vue.js that is used to render a list of items by iterating over an array or object.
                          In this case, it iterates over the inputs array and renders each item as a paragraph element. 
                          and it is good practice to add key whenever using the loops-->
                     
-                    <custom-input v-model = "email" :label = "emaillabel"/>
-                    <custom-input v-model = "password" :label = "passwordlabel"/>
+                    <custom-input 
+                    v-for = "(input, i) in inputs"
+                    :key = "i"
+                    v-model = "input.value" 
+                    :label = "input.label"
+                    :type = "input.type"
+                    />
                     <button>Submit</button>
                 </form>
                 `,
@@ -152,20 +157,25 @@
                     return {
                         title : "Login Form",
                         inputs: [
-                            'email', 
-                            'password',
-                            'name'
+                            //'email', 
+                            //'password',
+                            //'name'
+                            {
+                                label: 'Email',
+                                value: '',
+                                type: 'email'
+                            },
+                            {
+                                label: 'Password',
+                                value: '',
+                                type: 'password'
+                            },
                             ],
-                        email: '',
-                        password: '',
-                        // these are the data properties for the login form component
-                        emaillabel: 'Email',
-                        passwordlabel: 'Password'
                     }
                 },
                 methods: {
                     HandleSubmit(){
-                        console.log(this.email, this.password);
+                        console.log(this.inputs[0].value, this.inputs[1].value);
                     }
                 }
         })
@@ -174,10 +184,10 @@
             template: `
                 <div>
                     <label>{{label}}</label>
-                    <input type="text" v-model="inputValue">
+                    <input :type="type" v-model="inputValue">
                 </div>
             `,
-            props: ['label', 'modelValue'],
+            props: ['label', 'modelValue', 'type'],
             // this props array is used to define the label prop that can be passed to the custom-input component.
             // this allows the parent component (login-form) to pass a label value to the custom-input component.
             computed: {
