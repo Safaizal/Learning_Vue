@@ -129,6 +129,11 @@
                      But Without the event modifiers, there is an refresh on webpage whenever we click the button.
                      To avoid this we give the event modifiers like @submit.prevent -->
                     <h1> {{title}} </h1>
+                    <p v-for = "str in inputs" :key = "str">{{str}} </p>
+                    <!-- v-for is a directive in Vue.js that is used to render a list of items by iterating over an array or object.
+                         In this case, it iterates over the inputs array and renders each item as a paragraph element. 
+                         and it is good practice to add key whenever using the loops-->
+                    
                     <custom-input v-model = "email" :label = "emaillabel"/>
                     <custom-input v-model = "password" :label = "passwordlabel"/>
                     <button>Submit</button>
@@ -146,8 +151,13 @@
                 data(){
                     return {
                         title : "Login Form",
-                        email: 'qwert',
-                        password: 'qwert',
+                        inputs: [
+                            'email', 
+                            'password',
+                            'name'
+                            ],
+                        email: '',
+                        password: '',
                         // these are the data properties for the login form component
                         emaillabel: 'Email',
                         passwordlabel: 'Password'
@@ -180,8 +190,14 @@
                         return this.modelValue;
                         // this returns the value of the modelValue prop, which is bound to the v-model directive in the parent component.
                     },
-                    set(){
-
+                    set(value){
+                        this.$emit('update:modelValue', value);
+                        // this.$emit is used to emit an event from the custom-input component to the parent component (login-form).
+                        // In this case, it emits the 'update:modelValue' event with the new value  
+                        // when the input value changes, allowing the parent component to update its data property (email or password).
+                        // This is how two-way data binding works in Vue.js with v-model.
+                        // So, when the input field in the custom-input component changes, it emits an event to update the modelValue prop in the parent component.
+                        // This allows the parent component to receive the updated value and update its data property accordingly.
                     }
                 }
             }
