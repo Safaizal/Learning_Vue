@@ -15,202 +15,56 @@
             border: 2px solid blue;
             margin-top: 20px;
         }
-        .box1{
-            width: 200px;
-            height: 200px;
-            background-color: rgb(255, 0, 0);
-            border: 2px solid blue;
-            margin-top: 20px;
-        }
-        .box2{
-            width: 200px;
-            height: 200px;
-            background-color: rgb(0, 255, 0);
-            border: 2px solid blue;
-            margin-top: 20px;
-        }
-        .box3{
-            width: 200px;
-            height: 200px;
-            background-color: rgb(128, 0, 128);
-            border: 2px solid blue;
-            margin-top: 20px;
-        }
-        .box4{
-            width: 200px;
-            height: 200px;
-            background-color: rgb(255, 0, 0);
-            border: 2px solid blue;
-            margin-top: 20px;
-        }
-        [v-cloak]{
-            display: none;
-        }
-        input{
-            margin: 10px;
-            display: block;
-        }
     </style>
 </head>
 <body>
     <div id="app" class="container" v-cloak> 
-        <!-- this v-cloak directive is used to prevent the Vue.js application from displaying 
-        uncompiled template code before the Vue instance is fully mounted. -->
+        <button @click = "togglebox">Toggle Box</button>
+        <!-- this button is used to understand the Vue js lifecycle hooks -->
+        <!-- Lifecycle hooks in Vue.js are special methods that allow you to add code at specific stages of a component's lifecycle, such as when it is created, mounted, updated, or destroyed. -->
+        <!-- where lifecycle is known as the series of events that happen from the creation of a component to its destruction.
+         For example when we click on the toggle box, the box will created and in another click it will destroyed. -->
+        <box-component v-if = "isVisible" />
 
-        <login-form/>
-        <!-- this is a custom component, you can define it in the Vue instance or import it if it's in a separate file.
-        It will be rendered here. -->
-        <div>
-            {{greeting}}
-            <br>
-            <input type="text" v-model="greeting" placeholder="Type your greeting here">
-            <!-- v-model is used for two-way data binding in Vue.js. 
-             It allows you to bind the value of an input element to a data property, 
-             so that when the input changes, the data property updates automatically, 
-             and vice versa. -->
-            <br>
-            <input type="text" @keyup.enter="clicked(value)" v-model="value"placeholder="Type things to see enter event">
-            <!-- @keyup.enter is a shorthand for v-on:keyup.enter,
-             which listens for the enter key press event on the input field.
-             When the enter key is pressed, it calls the clicked method with the current value of the input field. -->
-        
-        </div>
-        <hr>
-        <button v-on:click ="blue = true">Show Box</button>
-        <button v-on:click ="green = !green">Toggle Box</button>
-        <!-- v-on is a directive in Vue.js that is used to listen to DOM events and execute methods when those events are triggered. -->
-        
-        <button @click ="purple = !purple">Toggle Box2</button>
-        <!-- here the @click is a shorthand for v-on:click, -->
+        <!-- Why we need lifecycle hooks?
+         This is used in various checking place like
+         to check if the user is authorized
+         APIs calls
+         Creating and removing the events
+         While getting or cleaning the data -->
 
-        <button @click ="togglebox">Toggle Box3</button>
-        <!-- we can also give method in here, this togglebox method is defined in the Vue instance to toggle the visibility of the red box. -->
-
-        <div v-if = "blue" class="box"></div>
-        <div v-if = "green" class="box2"></div>
-        <div v-if = "purple" class="box3"></div>
-        <div v-if = "red" class="box4"></div>
-        <!-- v-show are used to conditionally render elements in Vue.js. 
-         v-if removes the element from the DOM when the condition is false, 
-         while v-show toggles the visibility of the element without removing it from the DOM.-->
-
-        <!-- there are many other directives like v-for, v-on, v-bind, etc. 
-          check it on https://vuejs.org/api/built-in-directives.html -->
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         let app = Vue.createApp({
             data : function(){
                 return {
-                    greeting: 'Hello user',
-                    value: '',
-                    blue: false,
-                    purple: false,
-                    green: false,
-                    red :false,
+                    isVisible: false
                 }
             },
-            methods: {
-                // you can define methods here if needed
+            methods:{
                 togglebox(){
-                    this.red = !this.red;
-                },
-                clicked(value){
-                    console.log("Enter Key pressed " + value);
-                    // this method will be called when the enter key is pressed in the input field
+                    this.isVisible = !this.isVisible;
                 }
+            },
+            updated(){
+                console.log("updated");
             }
+            //this updated method is a lifecycle hook that is called after the component's DOM has been updated.
+            //In our case the isVisible is updated when we click on the toggle box button.
         })
-        app.component('login-form', {
-            template: `
-                <form @submit.prevent = "HandleSubmit">
-                <!-- @submit is a shorthand for v-on:submit, which listens for the submit event
-                     on the form and calls the HandleSubmit method when the form is submitted,
-                     But Without the event modifiers, there is an refresh on webpage whenever we click the button.
-                     To avoid this we give the event modifiers like @submit.prevent -->
-                    <h1> {{title}} </h1>
-                    <!-- <p v-for = "str in inputs" :key = "str">{{str}} </p> -->
-                    <!-- v-for is a directive in Vue.js that is used to render a list of items by iterating over an array or object.
-                         In this case, it iterates over the inputs array and renders each item as a paragraph element. 
-                         and it is good practice to add key whenever using the loops-->
-                    
-                    <custom-input 
-                    v-for = "(input, i) in inputs"
-                    :key = "i"
-                    v-model = "input.value" 
-                    :label = "input.label"
-                    :type = "input.type"
-                    />
-                    <button>Submit</button>
-                </form>
-                `,
-                // here we use v-bind to bind the label prop to the custom-input component.
-                // v-model is used to bind the password data property to the input field in the custom-input component.
-                // There is difference between :label and label,
-                // :label is a shorthand for v-bind:label, which binds the label prop to the custom-input component.
-                // label is a prop that can be passed to the custom-input component.
-                // In simple word label give the string value and it show in the web page.
-                // And :label give the variable that we created inside the data function of the Vue instance.
-                components: ['custom-input'],
-                // this components array is used to register the custom-input component within the login-form component.
-                data(){
-                    return {
-                        title : "Login Form",
-                        inputs: [
-                            //'email', 
-                            //'password',
-                            //'name'
-                            {
-                                label: 'Email',
-                                value: '',
-                                type: 'email'
-                            },
-                            {
-                                label: 'Password',
-                                value: '',
-                                type: 'password'
-                            },
-                            ],
-                    }
-                },
-                methods: {
-                    HandleSubmit(){
-                        console.log(this.inputs[0].value, this.inputs[1].value);
-                    }
-                }
-        })
-        // this component is defined within the Vue instance,
-        app.component('custom-input', {
-            template: `
-                <div>
-                    <label>{{label}}</label>
-                    <input :type="type" v-model="inputValue">
-                </div>
-            `,
-            props: ['label', 'modelValue', 'type'],
-            // this props array is used to define the label prop that can be passed to the custom-input component.
-            // this allows the parent component (login-form) to pass a label value to the custom-input component.
-            computed: {
-                // this computed property is used to create a two-way data binding with the v-model directive.
-                // When the input value changes, it updates the inputValue property in the custom-input component.
-                // And when the inputValue property changes, it updates the input field in the custom-input component.
-                // But here we need to define the get and set methods to make it work properly.
-                inputValue: {
-                    get() {
-                        return this.modelValue;
-                        // this returns the value of the modelValue prop, which is bound to the v-model directive in the parent component.
-                    },
-                    set(value){
-                        this.$emit('update:modelValue', value);
-                        // this.$emit is used to emit an event from the custom-input component to the parent component (login-form).
-                        // In this case, it emits the 'update:modelValue' event with the new value  
-                        // when the input value changes, allowing the parent component to update its data property (email or password).
-                        // This is how two-way data binding works in Vue.js with v-model.
-                        // So, when the input field in the custom-input component changes, it emits an event to update the modelValue prop in the parent component.
-                        // This allows the parent component to receive the updated value and update its data property accordingly.
-                    }
-                }
+        app.component('box-component', {
+            template: `<div class="box"></div>`,
+            created(){
+                console.log('Box component created');
+            },
+            mounted(){
+                console.log('Box component mounted');
+            },
+            unmounted(){
+                console.log('Box component unmounted');
             }
+            //this component defines a reusable box element with lifecycle hooks to log messages when the component is created, mounted, and unmounted.
         })
         app.mount('#app')
         //this app.mount is used to mount the Vue application to the HTML element with the id "app".
